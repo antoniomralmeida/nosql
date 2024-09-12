@@ -3,7 +3,6 @@ package cassandraApp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Cluster.Builder;
@@ -34,15 +33,11 @@ public class CASSANDRA {
 		String query1 = sb1.toString();
 		ResultSet rs = session.execute(query1);
 		List<Sensordata> sensordatas = new ArrayList<Sensordata>();
-		rs.forEach(r -> {
-			//System.out.println( r.getString("metric"));
-			sensordatas.add(new Sensordata(r.getString("host"), r.getString("metric"), r.getDate("time"), r. getDouble("value")));
-			
+		rs.forEach(r -> {			
+			sensordatas.add(new Sensordata(r.getString("host"), r.getString("metric"), r.getTimestamp("time"), r.getDouble("value")));
 		});
 		
 		sensordatas.forEach(d -> {System.out.println(d);});
-		
-		
 	}
 
 }
